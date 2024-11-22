@@ -1,0 +1,48 @@
+.model samll
+.stack 100h
+.data
+    s1 db 'nhap a: $'
+    s2 db 10, 13, 'nhap b: $'
+    s3 db 10, 13, 'a = b $'
+    s4 db 10, 13, 'a > b $' 
+    s5 db 10, 13, 'a < b $'
+.code
+    main proc
+        ;nhap 
+        mov ax, @data
+        mov ds, ax
+        
+        mov ah, 9
+        lea dx, s1
+        int 21h
+        
+        mov ah, 1
+        int 21h
+        mov bl, al
+        
+        
+        mov ah, 9
+        lea dx, s2
+        int 21h
+        
+        mov ah, 1
+        int 21h
+        mov bh, al
+        
+		;so sanh
+		cmp bl, bh
+		jge skip
+		
+		mov dl, 67
+		mov ah, 2
+		int 21h
+		
+skip: 
+		
+		
+	   
+        mov ah, 4ch
+        int 21h
+        
+        main endp
+    end main

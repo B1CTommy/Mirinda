@@ -1,0 +1,90 @@
+.model small
+.stack 100h
+.data
+    title1 db "nhap so thu nhat: $"
+    title2 db 10,13,"nhap so thu hai: $"
+    chuso db 10, 13, "tong = $"
+    str db 10, 13, "so vua nhap la: $"
+    num1 db ? ;tao mot bien rong
+    num2 db ?
+    
+.code
+    main proc
+        
+        mov ax, @data ;sua du lieu tu data
+        mov ds, ax
+        
+
+        
+        mov ah, 9; goi ham in ra string
+        lea dx, title1 
+        int 21h ;thuc hien ham
+        
+        mov ah, 1 ;lay 1 ky tu ban phim luu vao al
+        int 21h
+        mov ah, 0
+        sub al, 48 ;tu de lay gia tri real
+        mov bl, al ;bl = al <-> bl = 8
+        mov num1, al ;chuyen gia tri vao num1
+        
+        
+        mov ah, 9
+        lea dx, title2
+        int 21h 
+        
+        mov ah, 1 ;lay 1 ky tu ban phim luu vao al
+        int 21h
+        mov ah, 0
+        sub al, 48 ;tu de lay gia tri real
+        add bl, al ;bl += al <-> bl = 8+8 = 16
+        mov num2, al ;chuyen gia tri vao num1
+        
+        mov ah, 9
+        lea dx, str
+        int 21h
+                       
+        
+        mov al, num1
+        add al, 48
+        mov dl, al
+        mov ah, 2;in ra tu the dl
+        int 21h
+        
+        mov al, num2
+        add al, 48
+        mov dl, al
+        mov ah, 2
+        int 21h
+        
+        
+        
+        ;tinh tong
+        mov ah, 9
+        lea dx, chuso
+        int 21h
+        
+        
+        
+        mov ah, 0
+        mov al, bl ;al = bl <-> al = 16
+        mov cl, 10
+        div cl     ;al /= 10 <-> al = 1 va ah = 6
+        
+        add al, 48
+
+        add ah, 48 
+        mov dl, al ;dl = al <-> dl = 1
+        mov bl, ah ;bl = 6      
+        mov ah, 2
+        int 21h    ;in dl ra -> 1
+       
+        mov dl, bl ;dl = bl <-> dl = 6
+        mov ah, 2  
+        int 21h    ;in dl ra -> 6
+        
+        
+        mov ah, 4ch
+        int 21h
+        
+        main endp
+    end main

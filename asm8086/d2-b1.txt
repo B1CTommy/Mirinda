@@ -1,0 +1,94 @@
+.model small
+.stack 100h
+.data
+    s1 db 'Ho ten ban la: $'
+    s2 db 10, 13, 'Chu thuong: $'
+    s3 db 10, 13, 'Chu hoa: $'
+    s4 db 10, 13, 'Dao nguoc: $'
+    s db 100 dup(?)
+    
+.code
+    main proc
+        mov ax, @data
+        mov ds, ax
+        
+        ; In câu nh?c nh?p tên
+        mov ah, 9
+        lea dx, s1
+        int 21h
+        
+        ; Nh?p chu?i ký t?
+        mov bx, 0
+    nhapday: 
+        mov ah, 1
+        int 21h
+        cmp al, 13         ; Ki?m tra n?u nh?n Enter
+        je hienthi
+        mov s[bx], al      ; Luu ký t? vào m?ng s
+        inc bx
+        jmp nhapday
+        
+    hienthi:
+        ; Ð?t ký t? k?t thúc chu?i
+        mov s[bx], '$'
+
+        ; Hi?n th? chu?i ký t? dã nh?p du?i d?ng ch? thu?ng
+        mov ah, 9
+        lea dx, s2
+        int 21h
+        mov cx, bx         ; Ð?t cx = s? ký t? dã nh?p
+        mov di, 0          ; Ð?t di là ch? s? duy?t trong m?ng s
+        
+    inthuong:
+        mov al, s[di]
+        cmp al, 'A'        ; Ki?m tra n?u ký t? là ch? hoa
+        jl khongdoi
+        cmp al, 'Z'
+        jg khongdoi
+        add al, 32         ; Chuy?n sang ch? thu?ng n?u là ch? hoa
+    khongdoi:
+        mov dl, al
+        mov ah, 2
+        int 21h
+        inc di
+        loop inthuong
+
+        ; Hi?n th? chu?i ký t? dã nh?p du?i d?ng ch? hoa
+        mov ah, 9
+        lea dx, s3
+        int 21h
+        mov cx, bx
+        mov di, 0
+        
+    inhoa:
+        mov al, s[di]
+        cmp al, 'a'        ; Ki?m tra n?u ký t? là ch? thu?ng
+        jl khongdoih
+        cmp al, 'z'
+        jg khongdoih
+        sub al, 32         ; Chuy?n sang ch? hoa n?u là ch? thu?ng
+    khongdoih:
+        mov dl, al
+        mov ah, 2
+        int 21h
+        inc di
+        loop inhoa
+
+        ; Hi?n th? chu?i ký t? dã nh?p du?i d?ng d?o ngu?c
+        mov ah, 9
+        lea dx, s4
+        int 21h
+        mov cx, bx
+        dec bx
+        
+    innguoc:
+        mov dl, s[bx]
+        mov ah, 2
+        int 21h
+        dec bx
+        loop innguoc
+
+        ; Thoát chuong trình
+        mov ah, 4ch
+        int 21h
+    end main

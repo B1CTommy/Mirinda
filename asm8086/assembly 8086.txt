@@ -1,0 +1,33 @@
+al: thanh ghi của input
+dl: thanh ghi của output
+int 21h: thực hiện hàm
+
+cấu trúc cơ bản của assembly: {
+
+.model small
+.stack 100h
+.data
+
+.code
+    main proc 
+        
+        mov ah, 4ch
+        int 21h
+        
+        main endp
+    end main
+}
+
+mov ah: thực hiện hàm
+	- 1: hàm input
+	- 2: hàm output
+	- 9: string
+	
+vòng lặp:{
+	mov cl, i: gắn giá trị ban đầu i (i = value)
+	back: :là label chỉ vị trí thực hiện lệnh của vòng lặp
+	//do somethings
+	inc cl: tăng l lên 1 đơn vị
+	cmp cl, n: điều kiện dừng của vòng lặp (n = value)
+	jle back: quay lại label
+}
